@@ -341,19 +341,11 @@ class FlappyBirdEnv(gymnasium.Env):
     def reset(self, seed=None, options=None):
         """Resets the environment (starts a new game).
 
-        `Env.reset(seed=None)` does not reseed -- it continues `self.np_random`
-        (the only randomness source here, drawn once per pipe in
-        `_get_random_pipe`) from wherever it was left. That makes every
-        episode after the first depend on exactly how many pipes the
-        previous episode consumed before it ended, which depends on
-        wall-clock/agent timing rather than on `seed` -- so at a fixed
-        `seed`, only the very first episode's pipe course was ever actually
-        reproducible. Once a caller has passed an explicit `seed` here, we
+        Once a caller has passed an explicit `seed` here, we
         keep a dedicated generator and use it to mint each subsequent
         `seed=None` reset's effective seed, so every episode's course is a
         fixed function of (original seed, episode index) regardless of how
-        long any earlier episode ran. An explicit `seed` on any later reset
-        still hard-resets the stream as before.
+        long any earlier episode ran. 
         """
         if seed is not None:
             self._episode_seed_rng = np.random.default_rng(seed)
